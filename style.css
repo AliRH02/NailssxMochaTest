@@ -295,8 +295,9 @@ footer .social-btn {
   margin-top: 15px;
 }
 
-footer .social-icon {
-  background: #f7e6ea;
+footer .social-icon,
+footer .social-icon:visited {
+  background: #f7e6ea;        /* default color */
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -309,11 +310,13 @@ footer .social-icon {
 }
 
 footer .social-icon img {
-  width: 25px;
+  width: 50px;
 }
 
-footer .social-icon:hover {
-  background: #d6a77a;
+/* Hover and tap feedback */
+footer .social-icon:hover,
+footer .social-icon:active {
+  background: #d6a77a;        /* gold on hover/tap */
   transform: scale(1.1);
 }
 
@@ -322,7 +325,6 @@ footer p {
   font-size: 15px;
   opacity: 0.9;
 }
-
 /* =========================
    RESPONSIVE
 ========================= */
