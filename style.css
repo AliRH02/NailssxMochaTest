@@ -307,16 +307,18 @@ footer .social-icon:visited {
   border: 1px solid #d6a77a;
   transition: 0.3s;
   margin: 0 auto;
+utline: none;              
+ -webkit-tap-highlight-color: transparent;
 }
 
 footer .social-icon img {
-  width: 50px;
+  width: 40px;
 }
 
 /* Hover and tap feedback */
 footer .social-icon:hover,
 footer .social-icon:active {
-  background: #d6a77a;        /* gold on hover/tap */
+  background: #d6a77a;        
   transform: scale(1.1);
 }
 
