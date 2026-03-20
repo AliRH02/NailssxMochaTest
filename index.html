@@ -17,7 +17,7 @@
       <img src="images\Logo.jpg" alt="Nails x Mocha Logo">
     </div>
     <nav>
-      <a href="index.html">Home</a>
+      <a href="#home">Home</a>
       <a href="#services">Services</a>
       <a href="gallery.html">Gallery</a>
       <a href="policy.html">Policy</a>
@@ -28,7 +28,7 @@
 
 <main class="container">
 
-<section class="hero">
+<section id="home" class="hero">
 <h1>NailssxMocha</h1>
 <p>Gel X • Builder Gel • Rubber Gel</p>
 <a href="https://app.acuityscheduling.com/schedule.php?owner=38782823" class="cta-btn">Book Appointment</a>
@@ -102,32 +102,89 @@
 
   const sections = document.querySelectorAll("section");
   const navLinks = document.querySelectorAll("nav a");
+let isInitialLoad = true;
+
+  window.addEventListener("DOMContentLoaded", () => {
+  const hash = window.location.hash;
+
+  navLinks.forEach(l => l.classList.remove("active"));
+
+  if (hash) {
+    const targetLink = document.querySelector(`nav a[href="${hash}"]`);
+    if (targetLink) {
+      targetLink.classList.add("active");
+    }
+  } else {
+
+    const homeLink = document.querySelector('nav a[href="#home"]');
+    if (homeLink) {
+      homeLink.classList.add("active");
+    }
+  }
+
+  setTimeout(() => {
+    isInitialLoad = false;
+  }, 500);
+});
+
+  let isClickScrolling = false;
+
+  navLinks.forEach(link => {
+  link.addEventListener("click", (e) => {
+    const href = link.getAttribute("href");
+
+    if (
+      href === "#home" &&
+      (window.location.hash === "" || window.location.hash === "#home")
+    ) {
+      e.preventDefault();
+      return;
+    }
+
+    if (href.startsWith("#")) {
+      isClickScrolling = true;
+
+      navLinks.forEach(l => l.classList.remove("active"));
+      link.classList.add("active");
+
+      setTimeout(() => {
+        isClickScrolling = false;
+      }, 600);
+    }
+  });
+});
 
   window.addEventListener("scroll", () => {
-    let current = "";
+  if (isClickScrolling || isInitialLoad) return;
 
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop - 120; 
-      const sectionHeight = section.offsetHeight;
-      
-      if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
-        current = section.getAttribute("id");
-      }
-    });
+  if (window.scrollY < 100) {
+    navLinks.forEach(link => link.classList.remove("active"));
+    document.querySelector('nav a[href="#home"]').classList.add("active");
+    return;
+  }
 
-    navLinks.forEach(link => {
-      link.classList.remove("active");
+  let current = "";
 
-      if (link.getAttribute("href") === "#services" && current === "services") {
-        link.classList.add("active");
-      }
+  sections.forEach(section => {
+    const rect = section.getBoundingClientRect();
 
-      else if (link.getAttribute("href") === "index.html" && (link.getAttribute("href")!=="#services" && current !=="services")) {
-        link.classList.add("active");
-      }
-   });
+    if (rect.top <= 185 && rect.bottom >= 180) {
+      current = section.id;
+    }
   });
+
+  navLinks.forEach(link => link.classList.remove("active"));
+
+  if (current === "home" || current === "gallery") {
+    document.querySelector('nav a[href="#home"]').classList.add("active");
+  } 
+  else if (current === "services") {
+    document.querySelector('nav a[href="#services"]').classList.add("active");
+  }
+});
 </script>
+
 
 </body>
 </html>
+
