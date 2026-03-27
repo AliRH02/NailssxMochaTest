@@ -160,15 +160,33 @@ lightbox.addEventListener("touchmove", (e) => {
 
 lightbox.addEventListener("touchend", (e) => {
   endX = e.changedTouches[0].clientX;
+  endY = e.changedTouches[0].clientY;
 
-  if (Math.abs(startX - endX) > 50 && scale === 1) {
-    if (startX > endX) {
+  const diffX = startX - endX;
+  const diffY = startY - endY;
+
+  if (Math.abs(diffX) > 50 && Math.abs(diffY) < 50 && scale < 1.1) {
+    if (diffX > 0) {
       showNext();
     } else {
       showPrev();
     }
   }
 });
+
+lightbox.addEventListener("touchmove", (e) => {
+  if (e.touches.length === 1) {
+    e.preventDefault(); // 
+  }
+
+  if (e.touches.length === 2) {
+    const newDistance = getDistance(e.touches);
+    scale = newDistance / startDistance;
+
+    scale = Math.min(Math.max(scale, 1), 3);
+    document.getElementById("lightbox-img").style.transform = `scale(${scale})`;
+  }
+}, { passive: false });
 
 function getDistance(touches) {
   return Math.hypot(
