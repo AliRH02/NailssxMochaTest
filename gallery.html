@@ -130,7 +130,7 @@ function closeImage() {
 
 
 document.getElementById("lightbox").addEventListener("click", function(e) {
-  if (isSwiping) return; 
+  if (isSwiping) return;
 
   const screenWidth = window.innerWidth;
 
@@ -161,8 +161,13 @@ lightbox.addEventListener("touchstart", (e) => {
 
 
 lightbox.addEventListener("touchmove", (e) => {
-  isSwiping = true;
 
+  const moveX = e.touches[0].clientX;
+  const moveY = e.touches[0].clientY;
+
+  if (Math.abs(moveX - startX) > 10 || Math.abs(moveY - startY) > 10) {
+    isSwiping = true;
+  }
 
   if (e.touches.length === 1) {
     e.preventDefault();
@@ -185,8 +190,12 @@ lightbox.addEventListener("touchend", (e) => {
   const diffX = startX - endX;
   const diffY = startY - endY;
 
- 
-  if (Math.abs(diffX) > 50 && Math.abs(diffY) < 50 && scale < 1.1) {
+if (scale > 1) {
+    resetZoom();
+    return; // stop here so it doesn't trigger swipe
+  }
+
+  if (Math.abs(diffX) > 50 && Math.abs(diffY) < 50) {
     if (diffX > 0) {
       showNext();
     } else {
